@@ -72,4 +72,59 @@ def findLastRepeatedNumberIndex1(numbers, target): # O(log n)
     
     return -1
         
-print(findLastRepeatedNumberIndex1([0, 0, 1, 1, 1, 1, 1, 3, 3, 4, 5, 6, 7], 3))
+# print(findLastRepeatedNumberIndex1([0, 0, 1, 1, 1, 1, 1, 3, 3, 4, 5, 6, 7], 3))
+
+
+def findStartEnd(numbers, target):
+    if(len(numbers) > 0):        
+        startEnd = findStartEnd(numbers, target)
+        leftMost = findLeftMostIndex(numbers, startEnd[0], startEnd[1], target)
+        rightMost = findRightMostIndex(numbers, startEnd[0], startEnd[1], target)
+
+        return [leftMost, rightMost]
+    
+    return [-1, -1]
+
+def findRightMostIndex(numbers, start, end, target):
+    while(start <= end):
+        mid = (start + end) // 2
+
+        # se o teu mid ja eh o ultimo elemento do array
+        if mid == len(numbers) - 1:
+            return mid
+        # quando ele n eh o ultimo elemento do array,
+        # entao ele so vai ser a ultima ocorrencia se o proximo elemento
+        # nao for o target
+        if numbers[mid + 1] != numbers[mid]:
+            return mid
+
+        start = mid + 1
+
+    return -1
+    
+def findLeftMostIndex(numbers, start, end, target):
+    while(start <= end):
+        mid = (start + end) // 2
+
+        # se o teu mid ja eh o primeiro elemento do array
+        if mid == 0:
+            return mid
+        # quando ele n eh o primeiro elemento do array,
+        # entao ele so vai ser a primeira ocorrencia se o elemento anterior
+        # nao for o target
+        if numbers[mid - 1] != numbers[mid]:
+            return mid
+
+        end = mid - 1
+
+    return -1
+
+ 
+numbers = [1]
+target = 1
+startEnd = findStartEnd(numbers, target)
+
+print(startEnd)
+
+print(findRightMostIndex(numbers, startEnd[0], startEnd[1], target))
+print(findLeftMostIndex(numbers, startEnd[0], startEnd[1], target))
